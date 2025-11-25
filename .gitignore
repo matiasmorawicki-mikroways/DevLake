@@ -1,0 +1,51 @@
+# Environment and secrets
+.env
+*.env
+!.env.example
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Database backups
+*.sql
+!scripts/sql/*.sql
+backups/
+backup-*.tar.gz
+
+# Docker
+.docker/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.directory
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Dumps and debug
+dump.rdb
+*.dump
+
+# Custom configs (if they contain secrets)
+config/custom/
+
+# Demo specific
+troubleshoot-*/
+*.tar.gz
+deploy.log
