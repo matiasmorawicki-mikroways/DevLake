@@ -1,0 +1,458 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red", "value": null},
+              {"color": "orange", "value": 20},
+              {"color": "yellow", "value": 40},
+              {"color": "green", "value": 60}
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT ROUND(AVG(COALESCE(coverage, 0)), 1) as value FROM cq_file_metrics",
+          "refId": "A"
+        }
+      ],
+      "title": "📊 Average Code Coverage",
+      "type": "gauge"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 2400},
+              {"color": "orange", "value": 4800},
+              {"color": "red", "value": 7200}
+            ]
+          }
+        }
+      },
+      "gridPos": {"h": 8, "w": 6, "x": 6, "y": 0},
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT CONCAT(FLOOR(SUM(debt_minutes) / 480), 'd ', FLOOR((SUM(debt_minutes) % 480) / 60), 'h') as 'Technical Debt' FROM cq_file_metrics",
+          "refId": "A"
+        }
+      ],
+      "title": "⏱️ Total Technical Debt",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 500},
+              {"color": "orange", "value": 1000},
+              {"color": "red", "value": 2000}
+            ]
+          }
+        }
+      },
+      "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0},
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COUNT(*) as 'Total Code Smells' FROM cq_issues WHERE type = 'CODE_SMELL'",
+          "refId": "A"
+        }
+      ],
+      "title": "🐛 Code Smells",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green", "value": null},
+              {"color": "yellow", "value": 5},
+              {"color": "red", "value": 10}
+            ]
+          }
+        }
+      },
+      "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT 'Bugs' as metric, COUNT(*) as value FROM cq_issues WHERE type = 'BUG' UNION ALL SELECT 'Vulnerabilities', COUNT(*) FROM cq_issues WHERE type = 'VULNERABILITY' UNION ALL SELECT 'Security Hotspots', COUNT(*) FROM _tool_sonarqube_hotspots",
+          "refId": "A"
+        }
+      ],
+      "title": "🔒 Security Issues",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisBorderShow": false,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1
+          }
+        }
+      },
+      "gridPos": {"h": 10, "w": 12, "x": 0, "y": 8},
+      "id": 5,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "groupWidth": 0.7,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "xTickLabelRotation": 0
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  COALESCE(p.name, 'Unknown') as project,\n  ROUND(AVG(COALESCE(fm.coverage, 0)), 1) as coverage\nFROM cq_file_metrics fm\nLEFT JOIN _tool_sonarqube_projects p \n  ON fm.project_key LIKE CONCAT('%', p.project_key, '%')\nGROUP BY p.name\nORDER BY coverage DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "📈 Coverage by Project",
+      "type": "barchart"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          }
+        }
+      },
+      "gridPos": {"h": 10, "w": 12, "x": 12, "y": 8},
+      "id": 6,
+      "options": {
+        "displayLabels": ["name", "percent"],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": ["value", "percent"]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  COALESCE(p.name, 'Unknown') as project,\n  SUM(fm.debt_minutes) as debt_minutes\nFROM cq_file_metrics fm\nLEFT JOIN _tool_sonarqube_projects p \n  ON fm.project_key LIKE CONCAT('%', p.project_key, '%')\nGROUP BY p.name\nORDER BY debt_minutes DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "⏱️ Technical Debt by Project",
+      "type": "piechart"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "align": "auto",
+            "cellOptions": {"type": "auto"}
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{"color": "green", "value": null}]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "project"},
+            "properties": [
+              {"id": "custom.width", "value": 200}
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "debt_hours"},
+            "properties": [
+              {"id": "custom.width", "value": 100},
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 1},
+                    {"color": "orange", "value": 3},
+                    {"color": "red", "value": 6}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "code_smells"},
+            "properties": [
+              {"id": "custom.width", "value": 100},
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "green", "value": null},
+                    {"color": "yellow", "value": 10},
+                    {"color": "orange", "value": 50},
+                    {"color": "red", "value": 100}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {"id": "byName", "options": "coverage"},
+            "properties": [
+              {"id": "custom.width", "value": 80},
+              {"id": "unit", "value": "percent"},
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {"color": "red", "value": null},
+                    {"color": "orange", "value": 20},
+                    {"color": "yellow", "value": 40},
+                    {"color": "green", "value": 60}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {"h": 11, "w": 24, "x": 0, "y": 18},
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": [{"desc": true, "displayName": "debt_hours"}]
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  fm.file_name,\n  COALESCE(p.name, 'Unknown') as project,\n  fm.ncloc as lines,\n  fm.code_smells,\n  fm.bugs,\n  fm.vulnerabilities,\n  ROUND(fm.debt_minutes / 60, 1) as debt_hours,\n  ROUND(COALESCE(fm.coverage, 0), 1) as coverage\nFROM cq_file_metrics fm\nLEFT JOIN _tool_sonarqube_projects p \n  ON fm.project_key LIKE CONCAT('%', p.project_key, '%')\nORDER BY fm.debt_minutes DESC\nLIMIT 20",
+          "refId": "A"
+        }
+      ],
+      "title": "🏆 Top 20 Files by Technical Debt",
+      "type": "table"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          }
+        }
+      },
+      "gridPos": {"h": 9, "w": 12, "x": 0, "y": 29},
+      "id": 8,
+      "options": {
+        "displayLabels": ["name", "percent"],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": ["value"]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  severity,\n  COUNT(*) as count\nFROM cq_issues\nWHERE type = 'CODE_SMELL'\nGROUP BY severity\nORDER BY \n  CASE severity\n    WHEN 'BLOCKER' THEN 1\n    WHEN 'CRITICAL' THEN 2\n    WHEN 'MAJOR' THEN 3\n    WHEN 'MINOR' THEN 4\n    ELSE 5\n  END",
+          "refId": "A"
+        }
+      ],
+      "title": "🐛 Code Smells by Severity",
+      "type": "piechart"
+    },
+    {
+      "datasource": {"type": "mysql"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisBorderShow": false,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 1
+          }
+        }
+      },
+      "gridPos": {"h": 9, "w": 12, "x": 12, "y": 29},
+      "id": 9,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.8,
+        "groupWidth": 0.7,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {"type": "mysql"},
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT \n  COALESCE(p.name, 'Unknown') as project,\n  COUNT(*) as file_count\nFROM cq_file_metrics fm\nLEFT JOIN _tool_sonarqube_projects p \n  ON fm.project_key LIKE CONCAT('%', p.project_key, '%')\nGROUP BY p.name\nORDER BY file_count DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "📁 Files per Project",
+      "type": "barchart"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["sonarqube", "bancolombia", "production"],
+  "templating": {"list": []},
+  "time": {"from": "now-6h", "to": "now"},
+  "timezone": "browser",
+  "title": "BancoColumbia - SonarQube Production",
+  "uid": "bancolombia-sq-prod",
+  "version": 0
+}
