@@ -94,7 +94,7 @@ services:
       - devlake
     extra_hosts:
       - "sonarqube.bancocolumbia.cloud:10.224.216.38"
-      - "gitlab.bancocolumbia.cloud:10.224.218.61"  # Reemplaza con la IP real de GitLab
+     # - "gitlab.bancocolumbia.cloud:10.224.218.61"  
     dns:
       - 8.8.8.8
       - 1.1.1.1
