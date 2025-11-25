@@ -49,6 +49,12 @@ services:
     restart: always
     depends_on:
       - mysql
+    extra_hosts:
+      - "sonarqube.bancocolumbia.cloud:10.224.216.38"
+      - "gitlab.bancocolumbia.cloud:10.224.216.39"  # Reemplaza con la IP real de GitLab
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   devlake:
     image: devlake.docker.scarf.sh/apache/devlake:v1.0.3-beta8
@@ -65,6 +71,12 @@ services:
       IN_SECURE_SKIP_VERIFY: "true"
     depends_on:
       - mysql
+    extra_hosts:
+      - "sonarqube.bancocolumbia.cloud:10.224.216.38"
+      - "gitlab.bancocolumbia.cloud:10.224.216.39"  # Reemplaza con la IP real de GitLab
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
   config-ui:
     image: devlake.docker.scarf.sh/apache/devlake-config-ui:v1.0.3-beta8
@@ -80,6 +92,12 @@ services:
       #ADMIN_PASS: merico
     depends_on:
       - devlake
+    extra_hosts:
+      - "sonarqube.bancocolumbia.cloud:10.224.216.38"
+      - "gitlab.bancocolumbia.cloud:10.224.218.61"  # Reemplaza con la IP real de GitLab
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
 
 volumes:
   mysql-storage:
